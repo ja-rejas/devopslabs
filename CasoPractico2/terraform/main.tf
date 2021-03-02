@@ -1,8 +1,8 @@
 # https://registry.terraform.io/providers/hasicorp/azurerm/latest/docs
-
+# definimos el provider de modo que en este punto se indica que vamos a ir contra azure
 terraform {
  required_providers {
-  azurerm = {
+  azure = {
    source = "hashicorp/azurerm"
    #source = "terraform-providers/azurerm"
    version = "=2.46.1"
@@ -10,7 +10,9 @@ terraform {
  }
 }
 
-# Crea un service principal y rellena los siguientes datos para autenticar
+# Una vez creado el Service Principal se deberían rellenar los siguientes datos para autenticar
+# en el provider. Por seguridad y por buenas prácticas, esta sección se documenta en un fichero credentials.tf
+#que no está disponible para los demás usuarios (no se subirá al repositorio)
 #provider "azurerm" {
 # features {}
 # subscription_id = ""
@@ -20,7 +22,7 @@ terraform {
 #}
 
 # https://registry.terraform.io/providers/hasicorp/azurerm/latest/docs/resources/resource_group
-
+# En el resource group indicaremos la localización de las máquinas de definiremos
 resource "azurerm_resource_group" "rg" {
  name	= "kubernetes_rg"
  location = var.location
@@ -30,11 +32,11 @@ resource "azurerm_resource_group" "rg" {
  }
 }
 
-#Storage account
+#Storage account: Se utilizará para almacenar la información relativa de las máquinas
 # https://registry.terraform.io/providers/hasicorp/azurerm/latest/docs/resources/storage_aacount
 
-resource "azure_storage_account" "JARG_stAccount" {
-	name			= "JARG_staccountcp2"
+resource "azurerm_storage_account" "JARG_stAccount" {
+	name			= "staccountcp2jarg"
 	resource_group_name	= azurerm_resource_group.rg.name
 	location		= azurerm_resource_group.rg.location
 	account_tier		= "Standard"

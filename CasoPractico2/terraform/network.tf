@@ -36,7 +36,7 @@ resource "azurerm_network_interface" "myNic" {
     name                           = "ipconfig-${var.vms[count.index]}"
     subnet_id                      = azurerm_subnet.mySubnet.id 
     private_ip_address_allocation  = "Static"
-    private_ip_address             = "10.0.1.${cound.index + 10}"
+    private_ip_address             = "10.0.1.${count.index + 10}"
     public_ip_address_id           = azurerm_public_ip.myPublicIp[count.index].id
   }
 
@@ -49,8 +49,9 @@ resource "azurerm_network_interface" "myNic" {
 # IP pública
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip
 
-resource "azurerm_public_ip" "myPublicIp1" {
-  name                = "vmip1"
+resource "azurerm_public_ip" "myPublicIp" {
+  name                = "pubip-${var.vms[count.index]}"
+  count		      = length(var.vms)
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   allocation_method   = "Dynamic"

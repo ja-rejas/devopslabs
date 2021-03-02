@@ -1,8 +1,8 @@
-# Creamos una máquina virtual
+# Creamos de forma iterativa una máquina virtual por cada una de las variables definidas en vars.tf
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_virtual_machine
 
 resource "azurerm_linux_virtual_machine" "myVM" {
-    name                = "var.vms[count.index]"
+    name                = "${var.vms[count.index]}"
     count		= length(var.vms)
     resource_group_name = azurerm_resource_group.rg.name
     location            = azurerm_resource_group.rg.location
@@ -10,7 +10,8 @@ resource "azurerm_linux_virtual_machine" "myVM" {
     admin_username      = "adminUsername"
     network_interface_ids = [ azurerm_network_interface.myNic[count.index].id ]
     disable_password_authentication = true
-
+    #deshabilitamos la posibilidad de acceder mediante user/password y habilitamos la conexión ssh mediante
+    # negociación de certificados (previamente generados).
     admin_ssh_key {
         username   = "adminUsername"
         public_key = file("~/.ssh/id_rsa.pub")
@@ -35,7 +36,7 @@ resource "azurerm_linux_virtual_machine" "myVM" {
     }
 
     boot_diagnostics {
-        storage_account_uri = azurerm_storage_account.stAccount.primary_blob_endpoint
+        storage_account_uri = azurerm_storage_account.JARG_stAccount.primary_blob_endpoint
     }
 
     tags = {
