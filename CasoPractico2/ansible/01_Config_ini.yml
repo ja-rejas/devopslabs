@@ -1,0 +1,21 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+  - name: install chrony
+    dnf: name=chrony state=latest
+  - name: activa chrony
+    systemd: 
+     name: chronyd
+     enabled: yes
+  - name: actualiza systema
+    dnf:
+     name: "*"
+     state: latest
+    notify:
+      - "Reinicio de servidores"
+  handlers:
+  - name: Reinicio de servidores
+    shell: "sleep 2 && reboot"
+
