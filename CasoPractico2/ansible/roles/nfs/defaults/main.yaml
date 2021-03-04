@@ -1,0 +1,37 @@
+---
+# Defaults variables for role nfs-server
+
+# These are the exported nfs shares
+# By default we'll only create directories on existing filesystem and export those
+# But we can also create a LV from a VG, then mount and export it
+# See export-2 example with lv_init, vg_name, lv_name and lv_size
+# We'll also default to ext4 if lv_fstype isn't specified, see export-3
+
+nfs_exports:
+  - path: /srv/nfs
+    acls:
+      - 192.168.80.131(rw,sync)
+        #      - 192.168.80.132(rw,sync)
+        #- 192.168.80.133 (rw,sync)
+  - path: /srv/nfs
+    acls:
+      - 192.168.80.132(rw,sync)
+#    lv_init: True
+#    vg_name: vg_iscsi
+#    lv_name: export2
+#    lv_size: 2G 
+  - path: /srv/nfs
+    acls:
+      - 192.168.80.133(rw,sync)
+#    lv_init: True
+#    lv_fstype: xfs
+#    vg_name: vg_iscsi
+#    lv_name: export3
+#    lv_size: 2G
+
+        #nfs_exports: []
+
+# For perf tuning
+# By default we'll force number of vcpus/cores * 8 (http://nfs.sourceforge.net/nfs-howto/ar01s05.html) to get number of available threads
+# Of course modify/adapt to your needs in case node is also use for iscsid or other tasks
+nfs_threads: "{{ ansible_processor_vcpus * 1 }}"

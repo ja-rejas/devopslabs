@@ -1,0 +1,12 @@
+---
+
+- name: instalar ansible
+  dnf:
+          name: ansible
+          state: latest
+  become: yes
+- name: instalar git
+  dnf:
+          name: git
+          state: latest
+

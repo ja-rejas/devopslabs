@@ -1,0 +1,11 @@
+---
+
+# Defaults handlers para nfs-server
+- name: reload_exportfs
+  command: /usr/sbin/exportfs -ra
+  become: yes
+
+- name: restart_nfsd
+  service:
+    name: nfs-server
+    state: restarted

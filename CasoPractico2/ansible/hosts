@@ -3,7 +3,7 @@ ansible_python_interpreter=/usr/bin/python3
 ansible_user=ansible
 
 [master]
-NFS.local
+master.local
 
 [workers]
 master.local

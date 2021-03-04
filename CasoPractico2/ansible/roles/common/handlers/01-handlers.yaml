@@ -1,0 +1,9 @@
+---
+
+# En caso de que se haya actualizado el sistemas, reiniciamos las VMs
+- name: Restart ntpd
+  service:
+          name: ntpd
+          state: restarted 
+  become: yes
+

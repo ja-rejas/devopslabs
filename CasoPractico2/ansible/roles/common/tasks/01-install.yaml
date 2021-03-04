@@ -1,0 +1,31 @@
+---
+
+# Hacemos una instalación en todas las máquinas del chrony para sincronización de hora y evitar
+# problemas de tiempos una vez montemos el balanceador
+# instalamos el servicio        
+- name: install chrony
+  dnf:
+          name: chrony 
+          state: latest
+  become: yes
+
+# instalamos los paquetes de nfs nfs-util y nfs4-acl-tools
+- name: instala nfs
+  dnf:
+          name: ['nfs-utils','nfs4-acl-tools'] 
+          state: installed
+  become: yes
+
+- name: instala Python3
+  dnf:
+          name: python3
+          state: latest
+  become: yes
+
+# actualizamos el sistema para tener las últimas versioines
+- name: actualiza sistema
+  dnf:
+          name: "*"
+          state: latest
+  become: yes      
+

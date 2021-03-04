@@ -1,0 +1,57 @@
+---
+
+# activamos y arrancamos el servicio
+- name: activa y arranca nfs-server
+  service:
+          name: "{{ item }}"
+          enabled: true
+          state: started
+  with_items:
+          - nfs-server
+          - rpcbind
+
+- name: Configuring default exports
+  template:
+    src: exports.j2
+    dest: /etc/exports
+    owner: root
+    group: root
+    mode: 0644
+  become: yes  
+  notify: restart_nfsd
+  tags:
+    - config
+
+- name: Opening firewall ports
+  firewalld:
+          service: "{{ item }}"
+          permanent: yes
+          immediate: yes
+          state: enabled
+  with_items:
+          - nfs
+          - rpc-bind
+
+
+            #- name: Opening up nfs ports
+            #  template:
+            #    src: 01-input-service-policy-nfsd.j2
+            #    dest: /etc/sysconfig/iptables.d/01-input-service-policy-nfsd
+            #  notify:
+            #    - rebuild_iptables
+            #  tags:
+            #    - iptables
+
+- name: Ensuring we have exports directories
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    setype: public_content_rw_t
+  with_items:
+    - "{{ nfs_exports }}"
+  loop_control:
+    label: '{{ item.path }}'
+  tags:
+    - exports
+
+

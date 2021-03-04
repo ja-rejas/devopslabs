@@ -1,0 +1,9 @@
+---
+
+# instalamos los paquetes de nfs nfs-util y net-tools
+- name: instala nfs
+  dnf:
+          name: ['nfs-utils','net-tools','rpcbind'] 
+          state: installed
+  become: yes
+

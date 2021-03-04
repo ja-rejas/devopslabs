@@ -1,0 +1,20 @@
+---
+
+# Establecemos la misma hora en todas las máquinas
+- name: establece timezone
+  timezone:
+          name: Europe/Madrid
+
+# activamos el servicio
+- name: activa chrony
+  systemd:
+          name: chronyd
+          enabled: yes
+
+- name: activa ntp
+  command: /usr/bin/timedatectl set-ntp on
+  #Comentamos estas lineas que lanzarían un reinicio del servicio ntpd
+  #pero que realmente no es necesario. Estamos probando a incluir en un role un handler.
+  #notify:
+          # - "Restart ntpd"
+

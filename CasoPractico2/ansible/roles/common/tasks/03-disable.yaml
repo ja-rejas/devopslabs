@@ -1,0 +1,6 @@
+---
+
+# Deshabilitamos SELinux ya que para K8s no nos es necesario
+- name: Disable SELinux
+  selinux:
+         state: disabled
