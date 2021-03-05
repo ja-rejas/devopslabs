@@ -1,0 +1,22 @@
+---
+
+# obtenemos el token 
+- name: configura kubeadm
+  command: kubeadm token create --print-join-command
+  register: workers_join
+  become: yes
+
+# hacemos el join para unirnos al cluster
+- name: unimos worker al cluster
+  command: workers_join
+
+# Obtiene los nodos de k8s 
+- name: obtiene los nodos de k8s
+  command: kubectl get nodes
+  become: yes
+
+# Obtiene los nodos de k8s 
+- name: obtiene los nodos de k8s
+  command: kubectl get pods -A -o wide
+  become: yes
+

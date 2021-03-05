@@ -1,0 +1,41 @@
+---
+
+# instalamos y configuramos cilium
+#- name:  instala Cilium
+#  command: kubectl create -f https://raw.githubusercontent.com/cilium/cilium/v1.9/install/kubernetes/quick-install.yaml 
+
+
+# instalamos y configuramos calico
+- name:  instala Calico
+  command: kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
+  become: yes
+
+# instalamos calico
+- name: instala Calico (2)
+  command: wget https://docs.projectcalico.org/manifests/custom-resources.yaml
+  become: yes
+
+# copiamos el fichero
+- name: Copiamos ficheros admin
+  copy:
+    src: custom-resources.yaml
+    dest: /tmp/custom-resources.yaml
+    owner: root
+    group: root
+    mode: '0755'
+  become: yes  
+
+# configuramos k8s con el custo-resources
+- name: configura k8s
+  command: kubectl apply -f /tmp/custom-resources.yaml
+  become: yes
+ 
+# Obtiene los nodos de k8s 
+- name: obtiene los nodos de k8s
+  command: kubectl get nodes
+  become: yes
+
+# Obtiene los nodos de k8s 
+- name: obtiene los nodos de k8s
+  command: kubectl get pods -A
+  become: yes

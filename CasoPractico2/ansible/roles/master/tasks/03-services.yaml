@@ -12,10 +12,10 @@
 #  become: yes
 
 # Instalamos el plugin CNI (Container Network Interface) de kubernetes y definimos la red de los PODs 
-#- name: instala plugin CNI
-#  command: kubeadm init --pod-network-cidr 192.169.0.0/16
-#  register: kubeadm_init_stdout
-#  become: yes
+- name: instala plugin CNI
+  command: kubeadm init --pod-network-cidr 192.169.0.0/16
+  register: kubeadm_init_stdout
+  become: yes
 
 
 # autorizamos al usuario root acceder al cluster

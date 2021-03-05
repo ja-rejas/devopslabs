@@ -1,0 +1,8 @@
+---
+
+- name: configurar workers
+  hosts: workers 
+  gather_facts: true
+  become: yes
+  roles:
+          - workers

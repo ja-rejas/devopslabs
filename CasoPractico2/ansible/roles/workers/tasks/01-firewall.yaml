@@ -1,0 +1,14 @@
+---
+
+#configuramos el firewall para kubernetes
+- name: configura puertos firewall
+  firewalld:
+          port: "{{ item }}"
+          permanent: yes
+          immediate: yes
+          zone: public
+          state: enabled
+  with_items:
+          - 10250/tcp
+          - 30000-32767/tcp
+

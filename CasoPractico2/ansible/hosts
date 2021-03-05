@@ -6,7 +6,6 @@ ansible_user=ansible
 master.local
 
 [workers]
-master.local
 worker.local
 
 [nfs]
