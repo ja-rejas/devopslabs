@@ -1,0 +1,69 @@
+---
+
+
+# tenemos el fichero k8s.conf preparado para poder copiarlo en las 
+# máquinas y permitir que kubernetes maneje correctamente el tráfico con el cortafuegos
+- name: copia el fichero k8s.config
+  copy:
+    src: k8s.conf
+    dest: /etc/sysctl.d/k8s.conf
+    owner: root
+    group: root
+    mode: '0777'
+
+# tenemos el fichero kubernetes.repo preparado para poder copiarlo en las 
+# máquinas y configurar kubernetes
+- name: copia el fichero kubernetes.repo
+  copy:
+    src: kubernetes.repo
+    dest: /etc/yum.repos.d/kubernetes.repo
+    owner: root
+    group: root
+    mode: '0777'
+    
+# instalamos las utilidades de yum para instalar docker
+- name: instala yum utils
+  yum:
+          name: yum-utils
+          state: latest
+
+# añadimos el repositorio de docker 
+- name: añade repo de Docker
+  get_url:
+          url: https://download.docker.com/linux/centos/docker-ce.repo
+          dest: /etc/yum.repos.d/docker-ce.repo   
+
+# habilitamos el repositorio de docker
+- name: Habilita Docker Edge repo
+  ini_file:
+          dest: /etc/yum.repos.d/docker-ce.repo
+          section: 'docker-ce-edge'
+          option: enabled
+          value: '0'
+  become: yes
+
+# habilitamos el repositorio de docker para test
+- name: habilita Docker Test repo
+  ini_file:
+          dest: /etc/yum.repos.d/docker-ce.repo
+          section: 'docker-ce-test'
+          option: enabled
+          value: '0'
+  become: yes
+
+#instalamos docker-ce      
+- name: Instala Docker
+  dnf: 
+        name: docker-ce-19.03.14-3.el8 
+        enablerepo: containerd.io
+  become: yes        
+
+#instalamos kubernetes
+- name: Instala kubernetes
+  dnf:
+          name: ['kubelet','kubeadm','kubectl']
+          state: installed
+          disable_excludes: 'kubernetes'
+  become: yes
+ 
+ 

@@ -1,6 +1,6 @@
 ---
 
-- name: configurar maquinas
+- name: configurar maquina NFS
   hosts: nfs 
   gather_facts: true
   become: yes

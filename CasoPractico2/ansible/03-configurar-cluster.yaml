@@ -1,0 +1,8 @@
+---
+
+- name: configurar maquinas del cluster
+  hosts: master, workers 
+  gather_facts: true
+  become: yes
+  roles:
+          - cluster

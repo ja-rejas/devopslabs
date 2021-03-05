@@ -1,0 +1,14 @@
+---
+
+# deshabilitamos swap ya que kubernetes no puede trabajar con swap activado          
+- name: deshabilita SWAP
+  shell: |
+    swapoff -a
+
+# dehabilitamos swap a nivel de fstab para que en los reinicios no se levante swap automáticamente    
+- name: deshabilita SWAP en fstab
+  replace:
+    path: /etc/fstab
+    regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
+    replace: '# \1'
+

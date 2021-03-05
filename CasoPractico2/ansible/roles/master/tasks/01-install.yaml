@@ -1,12 +1,15 @@
 ---
 
-- name: instalar ansible
-  dnf:
-          name: ansible
-          state: latest
-  become: yes
-- name: instalar git
-  dnf:
-          name: git
-          state: latest
+
+
+# proceso de instalar una aplicación balanceada
+#- name: instalar ansible
+#  dnf:
+#          name: ansible
+#          state: latest
+#  become: yes
+#- name: instalar git
+#  dnf:
+#          name: git
+#          state: latest
 

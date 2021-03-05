@@ -1,0 +1,39 @@
+---
+
+#configuramos el firewall para kubernetes
+- name: configura puertos firewall
+  firewalld:
+          port: "{{ item }}"
+          permanent: yes
+          immediate: yes
+          state: enabled
+  with_items:
+          - 6443/tcp
+          - 2379-2380/tcp
+          - 10250/tcp
+          - 10251/tcp
+          - 10252/tcp
+          - 10255/tcp
+
+# Permitimos el acceso desde los workers
+- name: permite acceso desde workers
+  firewalld:
+          rich_rule: "{{ item.rule }}"
+          permanent: yes
+          state: enabled
+  with_items:
+          - "{{ip_rules}}"
+  loop_control:
+          label: '{{ item.rule }}' 
+
+
+
+#Permitimos el acceso de los contenedores a localhost
+- name: permite acceso a localhost
+  firewalld:
+          rich_rule: "{{ item }}"
+          zone: public
+          permanent: yes
+          state: enabled
+  with_items:
+          - rule family=ipv4 source address=172.17.0.0/16 accept

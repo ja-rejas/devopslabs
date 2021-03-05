@@ -1,0 +1,8 @@
+---
+
+- name: configurar master
+  hosts: master 
+  gather_facts: true
+  become: yes
+  roles:
+          - master

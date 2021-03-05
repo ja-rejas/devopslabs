@@ -8,6 +8,7 @@
           state: started
   with_items:
           - nfs-server
+          - nfs-utils
           - rpcbind
 
 - name: Configuring default exports
@@ -31,16 +32,7 @@
   with_items:
           - nfs
           - rpc-bind
-
-
-            #- name: Opening up nfs ports
-            #  template:
-            #    src: 01-input-service-policy-nfsd.j2
-            #    dest: /etc/sysconfig/iptables.d/01-input-service-policy-nfsd
-            #  notify:
-            #    - rebuild_iptables
-            #  tags:
-            #    - iptables
+          - mountd
 
 - name: Ensuring we have exports directories
   file:

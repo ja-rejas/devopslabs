@@ -1,0 +1,31 @@
+---
+
+# habilitamos transparent masquerading para que los PODs puedan comunicarse
+- name: activa modprove
+  modprobe:
+          name: br_netfilter
+          state: present
+
+# en el firewall habilitamos masquerade
+- name: Opening firewall ports
+  firewalld:
+          masquerade: 'yes'
+          permanent: yes
+          immediate: yes
+          state: enabled
+          
+# habilitamos el servicio de docker 
+- name: activa docker
+  service:
+          name: docker
+          state: started
+          enabled: yes
+
+# habilitamos el servicio de kubernetes 
+- name: activa kubelet
+  service:
+          name: kubelet
+          state: started
+          enabled: yes
+
+
