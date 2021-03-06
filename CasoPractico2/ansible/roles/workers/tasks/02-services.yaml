@@ -1,14 +1,15 @@
 ---
 
 # obtenemos el token 
-- name: configura kubeadm
-  command: kubeadm token create --print-join-command
-  register: workers_join
-  become: yes
+#host: master
+#- name: configura kubeadm
+#  command: kubeadm token create --print-join-command
+#  register: workers_join
+#  become: yes
 
 # hacemos el join para unirnos al cluster
 - name: unimos worker al cluster
-  command: workers_join
+  command: kubeadm join 192.168.80.132:6443 --token aomni5.6aqualp7y4f38dvc --discovery-token-ca-cert-hash sha256:7f872a40defb0e1c301165b3953cc474d4d8850d5301a9130af58754a61958d0
 
 # Obtiene los nodos de k8s 
 - name: obtiene los nodos de k8s
